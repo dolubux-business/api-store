@@ -3,16 +3,16 @@
 const mongoose = require("mongoose");
 
 const categorySchema = mongoose.Schema({
-	_id_product: {
+	id_user: {
 		type: String,
-		unique: true,
-		index: true,
 		required: true,
 	},
 	name: {
 		type: String,
 		min: 3,
 		max: 20,
+		unique: true,
+		index: true,
 		required: true,
 	},
 	description: {
@@ -21,8 +21,15 @@ const categorySchema = mongoose.Schema({
 		max: 1024,
 		require: true,
 	},
+	picture: {
+		type: String,
+		max: 1024,
+		default: "none",
+		require: true,
+	},
 	actived: {
 		type: Boolean,
+		default: true,
 		require: true,
 	},
 	add_at: {
@@ -31,4 +38,4 @@ const categorySchema = mongoose.Schema({
 	},
 });
 
-module.exports = mongoose.model("Collection", categorySchema, "collections");
+module.exports = mongoose.model("Category", categorySchema, "categories");

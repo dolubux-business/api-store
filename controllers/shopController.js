@@ -1,16 +1,10 @@
 /** @format */
 
+const router = require('express').Router()
 const { response, request } = require('express')
-
-//Utils
-
-//Model
 const Profile = require('../models/Profile')
+const Shop = require('../models/Shop')
 const User = require('../models/User')
-
-//Controlers
-
-//Services & Helpers
 const { __USER__ } = require('../services/userService')
 
 /*
@@ -44,31 +38,41 @@ const Index = async (req = request, res = response) => {}
  * *
  */
 const Show = async (req = request, res = response) => {
-  const profile = await Profile.findOne({
-    username: req.params.username,
+  const __store = await Shop.findOne({
+    name: req.params.store_name,
   })
-  const user = await user.findOne({ _id: profile.id_user })
+  const _ = __store
 
   try {
+    if (!_)
+      return res.status(404).send({
+        message: 'No products were found ! Thank you try again later...',
+        satut_code: 404,
+      })
+
+    const user = await user.findOne({ _id: _.id_user })
+
     const data = {
-      id: profile._id,
       owner: user,
-      first_name: profile.first_name,
-      last_name: profile.last_name,
-      avatar: profile.avatar,
-      preference: profile.preference,
-      created_at: profile.created_at,
-      modify_at: profile.modify_at,
+      profile: {
+        first_name: _.first_name,
+        last_name: _.last_name,
+        avatar: _.avatar,
+      },
+      store: {
+        name: _.store_name,
+        logo: _.store_logo,
+        order_contacts: _.store_order_contacts,
+      },
+      bio: _.bio,
     }
 
     res.status(201).send({ data })
   } catch (error) {
     console.log(error)
     res.send({
-      error: {
-        message: 'an error occurred impossible to recover the products..',
-        satut_code: 500,
-      },
+      message: 'an error occurred impossible to recover the products..',
+      satut_code: 500,
     })
   }
 }
@@ -90,12 +94,12 @@ const Show = async (req = request, res = response) => {
 const Store = async (req = request, res = response) => {
   const { user } = await __USER__(req, res)
 
-  req.body.avatar = req.file.path
+  req.body.logo = req.file.path
 
   try {
-    const imageProfile = new User({
+    const imageProfile = new Shop({
       _id: user._id,
-      avatar: req.body.avatar,
+      avatar: req.body.logo,
     })
 
     const updateImageProfile = await User.findOneAndUpdate(
@@ -130,11 +134,17 @@ const Store = async (req = request, res = response) => {
  * *
  * *
  */
-const Create = async (user) => {
-  const profile = new Profile({
+const Create = async (user, crypto) => {
+  let u = user._id
+  const store = new Shop({
     id_user: user._id,
+    name: `${Math.floor(Math.random() * 9925993399)}${u
+      .toString()
+      .substring(u.toString().length - 3, u.toString().length)}${crypto
+      .randomBytes(16)
+      .toString('hex')}:likidon`,
   })
-  return { profile }
+  return { store }
 }
 
 /*
@@ -153,52 +163,9 @@ const Create = async (user) => {
  */
 const Update = async (req = request, res = response) => {
   const { user } = __USER__(req, res)
-  const initPro = req.body
 
-  try {
-    const UpdateProfile = await Profile.findOneAndUpdate(
-      { id_user: user.id_user },
-      {
-        first_name: initPro.first_name,
-        last_name: initPro.last_name,
-        preference: initPro.preference,
-        modify_at: moment.utc(),
-      },
-      { new: true }
-    )
-
-    const savedUpdateProfile = await UpdateProfile.save()
-
-    res.status(201).send({
-      error: null,
-      data: savedUpdateProfile,
-      satut_code: 201,
-    })
-  } catch (error) {
-    console.log(error)
-    res.send({
-      error: true,
-      message: 'an error occurred impossible to update this profile..',
-      satut_code: 500,
-    })
-  }
+  const UpdateProfile = await Profile.findOneAndUpdate({}, {}, { new: false })
 }
-
-/*
- * *
- * *
- * *
- * *
- * *
- * Delete the account of user
- * *
- * *
- * *
- * *
- * *
- * *
- */
-const Destory = async (req = request, res = response) => {}
 
 /*
  * *
@@ -211,5 +178,4 @@ module.exports = {
   Store,
   Create,
   Update,
-  Destory,
 }

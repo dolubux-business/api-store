@@ -3,10 +3,21 @@
 const mongoose = require("mongoose");
 
 const productSchema = mongoose.Schema({
-	_id_user: {
+	id_owner: {
+		type: String,
+		required: true,
+	},
+	id_category: {
+		type: String,
+		required: true,
+	},
+	id_store: {
+		type: String,
+		required: true,
+	},
+	slug: {
 		type: String,
 		unique: true,
-		index: true,
 		required: true,
 	},
 	name: {
@@ -39,16 +50,23 @@ const productSchema = mongoose.Schema({
 		type: Array,
 		require: true,
 	},
+	others: {
+		type: Array,
+		// default: [{name: '', value: ''}],
+		require: true,
+	},
 	images: {
 		type: Array,
 		require: true,
 	},
 	available: {
 		type: Boolean,
+		default: true,
 		require: true,
 	},
 	available_discount: {
 		type: Boolean,
+		default: false,
 		require: true,
 	},
 	discounts: {
@@ -63,7 +81,7 @@ const productSchema = mongoose.Schema({
 	},
 	note: {
 		type: Number,
-		default: 0,
+		default: 100,
 		require: true,
 	},
 	add_at: {
@@ -72,4 +90,6 @@ const productSchema = mongoose.Schema({
 	},
 });
 
-module.exports = mongoose.model("Collection", productSchema, "collections");
+module.exports =
+	mongoose.models["Product"] ||
+	mongoose.model("Product", productSchema, "products");

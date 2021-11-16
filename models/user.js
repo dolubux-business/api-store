@@ -27,12 +27,18 @@ const userSchema = mongoose.Schema({
 	},
 	role: {
 		type: String,
-		default: "customer",
+		default: "store",
+	},
+	ispremiun: {
+		type: String,
+		default: false,
 	},
 	created_at: {
 		type: Date,
 		default: Date.now(),
+		unique: true,
 	},
 });
 
-module.exports = mongoose.model("User", userSchema, "users");
+module.exports =
+	mongoose.models["User"] || mongoose.model("User", userSchema, "users");

@@ -1,28 +1,34 @@
 {
-  "name": "dlx-website-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon --watch index.js"
-  },
-  "dependencies": {
-    "@hapi/joi": "^17.1.1",
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "cookie": "^0.3.1",
-    "cookie-parser": "^1.4.5",
-    "core-js": "^3.9.1",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "js-cookie": "^2.2.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.13.2",
-    "mongoose-unique-validator": "^2.0.3",
-    "nodemon": "^2.0.12",
-    "slugify": "^1.5.3"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+	"name": "store-likidon",
+	"version": "0.0.15",
+	"description": "Create a online store",
+	"main": "index.js",
+	"scripts": {
+		"dev": "nodemon index.js"
+	},
+	"dependencies": {
+		"@hapi/joi": "^17.1.1",
+		"@sendgrid/mail": "^7.5.0",
+		"axios": "^0.24.0",
+		"bcryptjs": "^2.4.3",
+		"body-parser": "^1.19.0",
+		"cookie": "^0.3.1",
+		"cookie-parser": "^1.4.5",
+		"core-js": "^3.9.1",
+		"dotenv": "^10.0.0",
+		"ejs": "^3.1.6",
+		"express": "^4.17.1",
+		"js-cookie": "^2.2.1",
+		"jsonwebtoken": "^8.5.1",
+		"moment": "^2.29.1",
+		"mongoose": "^5.13.2",
+		"mongoose-unique-validator": "^2.0.3",
+		"multer": "^1.4.3",
+		"nodemon": "^2.0.13",
+		"slug": "^5.1.0",
+		"slugify": "^1.5.3"
+	},
+	"keywords": [],
+	"author": "Ange Emmanuel",
+	"license": "ISC"
 }
